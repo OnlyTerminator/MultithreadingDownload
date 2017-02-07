@@ -3,7 +3,7 @@ package com.zxf.multithreadingdownload.date;
 import java.io.Serializable;
 
 /**
- * Created by luoss on 2016/5/13.
+ * Created by aotuman on 2017/2/7.
  */
 public class FileInfo implements Serializable {
 

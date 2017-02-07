@@ -1,5 +1,6 @@
 package com.zxf.multithreadingdownload.adapter;
 
+import android.app.DownloadManager;
 import android.content.Context;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -67,6 +68,7 @@ public class ListViewAdapter extends BaseAdapter {
             @Override
             public void onClick(View v) {
                 Log.i(TAG, "onClick: start download file");
+                com.zxf.downloadmaster.download.DownloadManager.getInstance(mContext).startDownload(info.getUrl(),null,null);
             }
         });
 
