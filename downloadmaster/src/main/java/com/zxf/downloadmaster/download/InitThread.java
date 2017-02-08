@@ -127,8 +127,10 @@ public class InitThread extends Thread {
 
         if (Environment.MEDIA_MOUNTED.equals(Environment.getExternalStorageState())
                 || !Environment.isExternalStorageRemovable()) {
-            path = mContext.getExternalFilesDir(null).getAbsolutePath();
-            Log.i(TAG,"path = "+path);
+//            path = getExternalCacheDir().getPath();
+            path = Environment.getExternalStorageDirectory().getPath();
+            Log.i(TAG,"path =========== "+path);
+
         } else {
             return path;
         }
