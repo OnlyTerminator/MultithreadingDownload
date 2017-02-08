@@ -5,6 +5,7 @@ import android.os.Environment;
 import android.text.TextUtils;
 import android.util.Log;
 
+import com.zxf.downloadmaster.callback.DownloadProgressCallBack;
 import com.zxf.downloadmaster.db.DownloadInfo;
 
 import java.io.File;
@@ -24,7 +25,7 @@ import java.util.regex.Pattern;
 
 public class InitThread extends Thread {
     private static final String TAG = "InitThread";
-    private static final String DOWNLOAD_FILE = "Download";
+    private static final String DOWNLOAD_FILE = "com.zxf.download";
     private DownloadInfo mDownloadInfo;
     private Context mContext;
     private ExecutorService mThreadPool;
@@ -126,13 +127,10 @@ public class InitThread extends Thread {
 
         if (Environment.MEDIA_MOUNTED.equals(Environment.getExternalStorageState())
                 || !Environment.isExternalStorageRemovable()) {
-//            path = getExternalCacheDir().getPath();
             path = mContext.getExternalFilesDir(null).getAbsolutePath();
             Log.i(TAG,"path = "+path);
-
         } else {
-            path = mContext.getFilesDir().getAbsolutePath();
-
+            return path;
         }
         File downloadFile = new File(path,DOWNLOAD_FILE);
         if(!downloadFile.exists()) {

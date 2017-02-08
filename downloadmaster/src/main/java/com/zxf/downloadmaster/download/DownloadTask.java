@@ -3,6 +3,7 @@ package com.zxf.downloadmaster.download;
 import android.content.Context;
 import android.os.Handler;
 
+import com.zxf.downloadmaster.callback.DownloadProgressCallBack;
 import com.zxf.downloadmaster.db.DownloadInfo;
 import com.zxf.downloadmaster.db.ThreadInfo;
 

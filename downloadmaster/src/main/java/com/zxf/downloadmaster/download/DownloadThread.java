@@ -2,6 +2,8 @@ package com.zxf.downloadmaster.download;
 
 import android.util.Log;
 
+import com.zxf.downloadmaster.callback.DownloadProgressCallBack;
+import com.zxf.downloadmaster.callback.OnDownload;
 import com.zxf.downloadmaster.db.DownloadInfo;
 import com.zxf.downloadmaster.db.ThreadInfo;
 
@@ -135,7 +137,16 @@ public class DownloadThread extends Thread {
                 }*/
             int progress = (int) (((float) nowFinished / (float) downloadInfo.lenght) * 100);
             Log.i(TAG, "notifyProgress: "+progress);
-
+            OnDownload download = downloadInfo.onDownload;
+            download.onDownloading(downloadInfo.url, progress); //执行回调，更新下载进度
+//                        Log.i(tag, "name = " + mTaskInfo.getFileName()+",progress = "+progress);
+            //start 下载完成
+            if(progress >= 100) {
+                File file = new File(downloadInfo.filePath,downloadInfo.fileName);
+                download.onDownloadFinished(file);             //执行回调，
+//                sendBroadcastDownloadSuc();                    //广播下载完成
+//                mThreadDao.deleteThread(mTaskInfo.getUrl()); //删除数据库中存储的对应的线程信息
+            }
              /*   intent.setAction(DownloadService.ACTION_UPDATE);
 //                                intent.putExtra("finished", (int) (((float) finished / (float) len) * 100));
                 intent.putExtra("finished", (int) (((float) tatolFinished / (float) mTaskInfo.getLenght()) * 100));

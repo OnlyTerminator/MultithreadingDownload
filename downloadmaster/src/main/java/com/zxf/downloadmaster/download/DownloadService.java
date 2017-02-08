@@ -6,6 +6,7 @@ import android.os.Build;
 import android.os.IBinder;
 import android.support.annotation.Nullable;
 
+import com.zxf.downloadmaster.callback.DownloadProgressCallBack;
 import com.zxf.downloadmaster.db.DownloadInfo;
 
 import java.io.File;

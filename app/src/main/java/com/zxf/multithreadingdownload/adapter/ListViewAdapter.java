@@ -1,6 +1,5 @@
 package com.zxf.multithreadingdownload.adapter;
 
-import android.app.DownloadManager;
 import android.content.Context;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -11,9 +10,13 @@ import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.zxf.downloadmaster.callback.DownloadProgressCallBack;
+import com.zxf.downloadmaster.callback.OnDownload;
+import com.zxf.downloadmaster.download.CustomDownloadManager;
 import com.zxf.multithreadingdownload.R;
 import com.zxf.multithreadingdownload.date.FileInfo;
 
+import java.io.File;
 import java.util.List;
 
 /**
@@ -63,12 +66,13 @@ public class ListViewAdapter extends BaseAdapter {
         holder.pbProgress.setMax(100);
 
         holder.pbProgress.setTag(info.getUrl());
+        final OnDownloadImpl impl = new OnDownloadImpl(holder.pbProgress,position);
         //start 设置开始下载点击监听
         holder.btStart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Log.i(TAG, "onClick: start download file");
-                com.zxf.downloadmaster.download.DownloadManager.getInstance(mContext).startDownload(info.getUrl(),null,null);
+                CustomDownloadManager.getInstance(mContext).startDownload(info.getUrl(), null, null, impl);
             }
         });
 
@@ -91,4 +95,32 @@ public class ListViewAdapter extends BaseAdapter {
         Button btStop;
     }
 
+    /**
+     * 下载回调监听类
+     */
+    class OnDownloadImpl implements OnDownload {
+        //        public String url;
+        public ProgressBar pb; //进度条
+        public int position;  //列表位置
+
+        public OnDownloadImpl(ProgressBar pb ,int posision) {
+//            this.url = url;
+            this.pb = pb;
+            this.position = posision;
+        }
+
+        @Override
+        public void onDownloading(String retUrl, int finished) {
+            String pbUrl = (String) pb.getTag();
+            if(retUrl.equals(pbUrl)) {
+                pb.setProgress(finished);                   //设置进度条进度
+                mList.get(position).setFinished(finished); //保存进度
+            }
+        }
+
+        @Override
+        public void onDownloadFinished(File downloadFile) {
+
+        }
+    }
 }
