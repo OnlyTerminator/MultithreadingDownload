@@ -2,6 +2,7 @@ package com.zxf.downloadmaster.download;
 
 import android.app.Service;
 import android.content.Intent;
+import android.os.Binder;
 import android.os.Build;
 import android.os.IBinder;
 import android.support.annotation.Nullable;
@@ -24,6 +25,7 @@ public class DownloadService extends Service{
     /** cpu核心数默认值 */
     private static final int DEFAULT_CPU_CORES = 2;
 
+    private DownloadBinder mBinder;
     @Override
     public void onCreate() {
         super.onCreate();
@@ -32,7 +34,10 @@ public class DownloadService extends Service{
     @Nullable
     @Override
     public IBinder onBind(Intent intent) {
-        return null;
+        if(null == mBinder){
+            mBinder = new DownloadBinder();
+        }
+        return mBinder;
     }
 
     /**
@@ -95,4 +100,13 @@ public class DownloadService extends Service{
             return false;
         }
     };
+
+    /**
+     * 绑定服务类
+     */
+    public class DownloadBinder extends Binder {
+        public  DownloadService getService () {
+            return DownloadService.this;
+        }
+    }
 }

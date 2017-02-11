@@ -6,6 +6,7 @@ import android.widget.Adapter;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 
+import com.zxf.downloadmaster.download.CustomDownloadManager;
 import com.zxf.multithreadingdownload.adapter.ListViewAdapter;
 import com.zxf.multithreadingdownload.date.FileInfo;
 
@@ -46,5 +47,11 @@ public class MainActivity extends Activity {
         adapter = new ListViewAdapter(this,fileList);
         listView.setAdapter(adapter);
         adapter.notifyDataSetChanged();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        CustomDownloadManager.getInstance(this).destroy();
     }
 }
